@@ -7,27 +7,11 @@ import android.graphics.Bitmap
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.DisplayMetrics
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.graphics.convertTo
-import androidx.core.graphics.createBitmap
-import androidx.fragment.app.Fragment
 import com.example.mustache.arface.FaceMask
 import com.example.mustache.arface.FaceMaskElement
 import com.example.mustache.rendering.AugmentedFaceFragment
 import com.example.mustache.rendering.AugmentedFaceListener
 import com.example.mustache.rendering.AugmentedFaceNode
-import com.google.ar.core.Frame
-import com.google.ar.core.ImageFormat
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_augmented_face.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), AugmentedFaceListener {
@@ -35,7 +19,6 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     private var faceMasks = ArrayList<FaceMask>()
     private var currentMaskIndex: Int = 0
     private var updateMask: Boolean = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,7 +114,4 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(mOrientation));
     Log.d(TAG, "Capture request created.");
     mCaptureSession.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler); */
-
-
-
 }
