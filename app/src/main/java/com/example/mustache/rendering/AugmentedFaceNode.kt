@@ -20,7 +20,6 @@ class AugmentedFaceNode(val augmentedFace: AugmentedFace?, val context: Context)
 
     companion object {
         enum class FaceLandmark {
-            MUSTACHE
         }
     }
 
@@ -70,9 +69,6 @@ class AugmentedFaceNode(val augmentedFace: AugmentedFace?, val context: Context)
 
     private fun getRegionPose(faceLandmark: FaceLandmark): Pose? {
         return when (faceLandmark) {
-            FaceLandmark.MUSTACHE -> getLandmarkPose(11)
-        }
-
     }
     private fun getLandmarkPose(vertexIndex: Int) : Pose? {
         val centerPose = augmentedFace?.centerPose

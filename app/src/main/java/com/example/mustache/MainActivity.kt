@@ -1,14 +1,17 @@
 package com.example.mustache
 
+import android.app.Activity
+import android.app.Instrumentation
+import android.content.Intent
+import android.graphics.Bitmap
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import com.example.mustache.arface.FaceMask
 import com.example.mustache.arface.FaceMaskElement
 import com.example.mustache.rendering.AugmentedFaceFragment
 import com.example.mustache.rendering.AugmentedFaceListener
 import com.example.mustache.rendering.AugmentedFaceNode
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), AugmentedFaceListener {
@@ -23,8 +26,12 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         (face_view as AugmentedFaceFragment).setAugmentedFaceListener(this)
         initMasks()
         change_btn.setOnClickListener { nextMask() }
+
+        /* val shoot_pic = findViewById<ImageButton>(R.id.shoot_pic) */
+
     }
 
+    /* AR Code Below */
     override fun onFaceAdded(face: AugmentedFaceNode) {
         changeMask(face)
     }
@@ -37,46 +44,27 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     }
 
     private fun initMasks() {
-        val redlandmarks = ArrayList<FaceMaskElement>()
-        redlandmarks.add(
-            FaceMaskElement(
-                AugmentedFaceNode.Companion.FaceLandmark.MUSTACHE,
-                "models/mustache_one.obj",
-                "models/red_color.png"
-            )
-        )
-        faceMasks.add(FaceMask("models/cafeclaro_color.png", redlandmarks))
-
-        val blondelandmarks = ArrayList<FaceMaskElement>()
-        blondelandmarks.add(
-            FaceMaskElement(
-                AugmentedFaceNode.Companion.FaceLandmark.MUSTACHE,
-                "models/mustache_two.obj",
-                "models/blonde_color.png"
-            )
-        )
-        faceMasks.add(FaceMask("models/cafeclaro_color.png", blondelandmarks))
 
         val lightbrownlandmarks = ArrayList<FaceMaskElement>()
         lightbrownlandmarks.add(
             FaceMaskElement(
                 AugmentedFaceNode.Companion.FaceLandmark.MUSTACHE,
-                "models/mustache_three.obj",
+                "models/mustache_lightbrown.obj",
                 "models/cafeclaro_color.png"
             )
         )
-        faceMasks.add(FaceMask("models/cafeclaro_color.png", lightbrownlandmarks))
+        faceMasks.add(FaceMask("models/invisiblemask.png", lightbrownlandmarks))
 
         val brownlandmarks = ArrayList<FaceMaskElement>()
         brownlandmarks.add(
             FaceMaskElement(
                 AugmentedFaceNode.Companion.FaceLandmark.MUSTACHE,
-                "models/mustache_four.obj",
+                "models/mustache_darkbrown.obj",
                 "models/brown_color.png"
             )
         )
 
-        faceMasks.add(FaceMask("models/cafeclaro_color.png", brownlandmarks))
+        faceMasks.add(FaceMask("models/invisiblemask.png", brownlandmarks))
     }
 
     private fun nextMask() {
@@ -95,10 +83,35 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         }
 
         face.clearLandmarks()
-         currentMask.landmarkMap?.let { landmarks ->
-             for (landmark in landmarks) {
-                 face.setRegionModel(landmark.landmark, landmark.model, landmark.texture)
-             }
-         }
+        currentMask.landmarkMap?.let { landmarks ->
+            for (landmark in landmarks) {
+                face.setRegionModel(landmark.landmark, landmark.model, landmark.texture)
+            }
+        }
     }
+/** convertir displaymetrics(unit) en int y continuar tratando de tomar la foto con ar on
+    fun requestpicture() {
+        createBitmap(width = gettoInt(displayMetricsW()) , height = displayMetricsH(), Bitmap.Config = Bitmap.Config.ARGB_8888)
+    }
+
+    fun displayMetricsH(){
+        var displayMetrics: DisplayMetrics = DisplayMetrics()
+        var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
+            var displayheight: Int = displayMetrics.heightPixels
+    }
+ fun toInt = Int
+
+    fun displayMetricsW(){
+        var displayMetrics: DisplayMetrics = DisplayMetrics()
+        var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
+        var displayWidth: Int = displayMetrics.widthPixels
+    }
+
+    final CaptureRequest.Builder captureBuilder =
+    mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+    captureBuilder.addTarget(mPreviewReader.getSurface());
+    captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
+    captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(mOrientation));
+    Log.d(TAG, "Capture request created.");
+    mCaptureSession.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler); */
 }

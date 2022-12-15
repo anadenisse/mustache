@@ -10,9 +10,6 @@ import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.provider.Settings
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import androidx.core.content.ContextCompat
@@ -172,7 +169,6 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
             }
 
             // Always check for camera permission
-            if (checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 permissions.add(Manifest.permission.CAMERA)
@@ -359,29 +355,29 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
                     GLES20.glDepthMask(true)
                 }
             }
-        }
-        override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-            displayRotationHelper.onSurfaceChanged(width, height);
-            GLES20.glViewport(0, 0, width, height);
-        }
-
-        override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-            GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f)
-
-            // Prepare the rendering objects. This involves reading shaders, so may throw an IOException.
-
-            // Prepare the rendering objects. This involves reading shaders, so may throw an IOException.
-            try {
-                // Create the texture and pass it to ARCore session to be filled during update().
-                backgroundRenderer.createOnGlThread(context)
-            } catch (e: IOException) {
-                println("Failed to read an asset file $e")
-            }
-        }
-    private fun configureSession() {
-        val config = Config(session)
-        config.augmentedFaceMode = Config.AugmentedFaceMode.MESH3D
-        session?.configure(config)
-    }
 }
 
+override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
+    displayRotationHelper.onSurfaceChanged(width, height);
+    GLES20.glViewport(0, 0, width, height);
+    mWidth = width;
+    mHeight = height;
+}
+
+override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+    GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f)
+
+    // Prepare the rendering objects. This involves reading shaders, so may throw an IOException.
+    try {
+        // Create the texture and pass it to ARCore session to be filled during update().
+        backgroundRenderer.createOnGlThread(context)
+    } catch (e: IOException) {
+        println("Failed to read an asset file $e")
+    }
+}
+private fun configureSession() {
+val config = Config(session)
+config.augmentedFaceMode = Config.AugmentedFaceMode.MESH3D
+session?.configure(config)
+}
+}
