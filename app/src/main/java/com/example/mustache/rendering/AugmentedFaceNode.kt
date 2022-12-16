@@ -74,7 +74,7 @@ class AugmentedFaceNode(val augmentedFace: AugmentedFace?, val context: Context)
         return when (faceLandmark) {
 
             FaceLandmark.MUSTACHE -> getLandmarkPose(0)
-            FaceLandmark.GLASSES -> getLandmarkPose(197)
+            FaceLandmark.GLASSES -> getLandmarkPose(6)  /*195 o 6*/
         }
 
     }
