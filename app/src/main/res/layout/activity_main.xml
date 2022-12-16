@@ -11,7 +11,8 @@
        android:id="@+id/face_view"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:layout_gravity="top"/
+
+       android:layout_gravity="top"/>
 
    <LinearLayout
        android:id="@+id/linearLayout"
@@ -60,14 +61,4 @@
           app:srcCompat="@drawable/ic_baseline_next_plan_24" />
    </LinearLayout>
 
-
-   <ImageView
-       android:id="@+id/imageView"
-       android:layout_width="0dp"
-       android:layout_height="0dp"
-       app:layout_constraintBottom_toBottomOf="@+id/face_view"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="@+id/face_view"
-       app:layout_constraintTop_toTopOf="parent"
-       tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

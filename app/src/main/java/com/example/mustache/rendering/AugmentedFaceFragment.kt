@@ -26,6 +26,18 @@ import java.util.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.collections.HashMap
+import android.graphics.Bitmap
+
+import android.os.Environment
+import android.os.HandlerThread
+import android.os.Looper
+import android.view.*
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Long
+import java.nio.IntBuffer
+import java.util.logging.Handler
+
 
 class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
 
@@ -44,6 +56,9 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
     private var canRequestDangerousPermissions = true
     private val messageSnackbarHelper: SnackbarHelper = SnackbarHelper()
     private val RC_PERMISSIONS = 1010
+    private var mWidth = 0
+    private var mHeight = 0
+    private var capturePicture = false
 
     private var augmentedFaceListener: AugmentedFaceListener? = null 
 
@@ -169,10 +184,19 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
             }
 
             // Always check for camera permission
+            if (checkSelfPermission(requireActivity(), Manifest.permission.CAMERA )
+
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 permissions.add(Manifest.permission.CAMERA)
             }
+
+            if (checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+
 
             if (!permissions.isEmpty()) {
                 // Request the permissions
@@ -211,6 +235,7 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
             if (checkSelfPermission(
                     requireActivity(),
                     Manifest.permission.CAMERA
+
                 )
                 == PackageManager.PERMISSION_GRANTED
             ) {
@@ -381,3 +406,4 @@ config.augmentedFaceMode = Config.AugmentedFaceMode.MESH3D
 session?.configure(config)
 }
 }
+

@@ -7,12 +7,30 @@ import android.graphics.Bitmap
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.View
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.convertTo
+import androidx.core.graphics.createBitmap
+import androidx.fragment.app.Fragment
 import com.example.mustache.arface.FaceMask
 import com.example.mustache.arface.FaceMaskElement
 import com.example.mustache.rendering.AugmentedFaceFragment
 import com.example.mustache.rendering.AugmentedFaceListener
 import com.example.mustache.rendering.AugmentedFaceNode
+import com.google.ar.core.Frame
+import com.google.ar.core.ImageFormat
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_augmented_face.*
 import java.util.*
+/*import android.R*/
 
 class MainActivity : AppCompatActivity(), AugmentedFaceListener {
 
@@ -67,6 +85,7 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         faceMasks.add(FaceMask("models/invisiblemask.png", brownlandmarks))
     }
 
+
     private fun nextMask() {
         currentMaskIndex++
         if (currentMaskIndex == faceMasks.size) {
@@ -89,22 +108,24 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
             }
         }
     }
-/** convertir displaymetrics(unit) en int y continuar tratando de tomar la foto con ar on
+
+/*
+    convertir displaymetrics(unit) en int y continuar tratando de tomar la foto con ar on
+
     fun requestpicture() {
-        createBitmap(width = gettoInt(displayMetricsW()) , height = displayMetricsH(), Bitmap.Config = Bitmap.Config.ARGB_8888)
-    }
-
-    fun displayMetricsH(){
         var displayMetrics: DisplayMetrics = DisplayMetrics()
-        var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
-            var displayheight: Int = displayMetrics.heightPixels
-    }
- fun toInt = Int
-
-    fun displayMetricsW(){
-        var displayMetrics: DisplayMetrics = DisplayMetrics()
-        var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
+        var displayheight: Int = displayMetrics.heightPixels
         var displayWidth: Int = displayMetrics.widthPixels
+        val ARGB_8888: Bitmap.Config = Bitmap.Config.ARGB_8888
+        createBitmap(width = displayWidth, height = displayheight, Bitmap.Config.ARGB_8888)
+    } */
+    /**
+    fun displayMetricsH(){
+    var displayMetrics: DisplayMetrics = DisplayMetrics()
+    var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
+    var displayheight: Int = displayMetrics.heightPixels
+    }
+
     }
 
     final CaptureRequest.Builder captureBuilder =
@@ -113,5 +134,7 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
     captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(mOrientation));
     Log.d(TAG, "Capture request created.");
-    mCaptureSession.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler); */
-}
+    mCaptureSession.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler);
+
+     */
+
