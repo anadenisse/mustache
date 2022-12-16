@@ -56,7 +56,6 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
     private var canRequestDangerousPermissions = true
     private val messageSnackbarHelper: SnackbarHelper = SnackbarHelper()
     private val RC_PERMISSIONS = 1010
-
     private var mWidth = 0
     private var mHeight = 0
     private var capturePicture = false
@@ -186,6 +185,7 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
 
             // Always check for camera permission
             if (checkSelfPermission(requireActivity(), Manifest.permission.CAMERA )
+
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 permissions.add(Manifest.permission.CAMERA)
@@ -196,6 +196,7 @@ class AugmentedFaceFragment : Fragment(), GLSurfaceView.Renderer {
             ) {
                 permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
+
 
             if (!permissions.isEmpty()) {
                 // Request the permissions

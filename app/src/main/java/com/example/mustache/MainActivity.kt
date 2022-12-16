@@ -32,14 +32,11 @@ import kotlinx.android.synthetic.main.fragment_augmented_face.*
 import java.util.*
 /*import android.R*/
 
-
-
 class MainActivity : AppCompatActivity(), AugmentedFaceListener {
 
     private var faceMasks = ArrayList<FaceMask>()
     private var currentMaskIndex: Int = 0
     private var updateMask: Boolean = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +85,7 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         faceMasks.add(FaceMask("models/invisiblemask.png", brownlandmarks))
     }
 
+
     private fun nextMask() {
         currentMaskIndex++
         if (currentMaskIndex == faceMasks.size) {
@@ -110,6 +108,7 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
             }
         }
     }
+
 /*
     convertir displaymetrics(unit) en int y continuar tratando de tomar la foto con ar on
 
@@ -126,6 +125,7 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
     var displayheight: Int = displayMetrics.heightPixels
     }
+
     }
 
     final CaptureRequest.Builder captureBuilder =
@@ -137,4 +137,4 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     mCaptureSession.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler);
 
      */
-}
+

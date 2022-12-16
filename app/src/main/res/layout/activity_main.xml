@@ -11,6 +11,7 @@
        android:id="@+id/face_view"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
+
        android:layout_gravity="top"/>
 
    <LinearLayout
@@ -59,4 +60,5 @@
           android:background="@null"
           app:srcCompat="@drawable/ic_baseline_next_plan_24" />
    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
