@@ -4,12 +4,17 @@ import android.app.Activity
 import android.app.Instrumentation
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.media.Image
+import android.opengl.GLSurfaceView
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.HandlerThread
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.PixelCopy
+import android.view.SurfaceView
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -30,6 +35,8 @@ import com.google.ar.core.ImageFormat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_augmented_face.*
 import java.util.*
+import java.util.logging.Handler
+
 /*import android.R*/
 
 class MainActivity : AppCompatActivity(), AugmentedFaceListener {
@@ -37,6 +44,7 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
     private var faceMasks = ArrayList<FaceMask>()
     private var currentMaskIndex: Int = 0
     private var updateMask: Boolean = false
+    private var surfaceView: GLSurfaceView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +52,11 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         (face_view as AugmentedFaceFragment).setAugmentedFaceListener(this)
         initMasks()
         change_btn.setOnClickListener { nextMask() }
+        /* shoot_pic.setOnClickListener {
+            getBitmapFromView()
+            usePixelCopy(surfaceView: SurfaceView; callback: (Bitmap?) -> Unit))
+        }  */
 
-        /* val shoot_pic = findViewById<ImageButton>(R.id.shoot_pic) */
 
     }
 
@@ -83,6 +94,16 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         )
 
         faceMasks.add(FaceMask("models/invisiblemask.png", brownlandmarks))
+
+        val test = ArrayList<FaceMaskElement>()
+        test.add(
+            FaceMaskElement(
+                AugmentedFaceNode.Companion.FaceLandmark.GLASSES,
+                "models/ar.obj",
+                "models/brown_color.png"
+            )
+        )
+        faceMasks.add(FaceMask("models/invisiblemask.png", test))
     }
 
 
@@ -109,32 +130,59 @@ class MainActivity : AppCompatActivity(), AugmentedFaceListener {
         }
     }
 
+    fun getBitmapFromView(view: View): Bitmap? {
+        var bitmap =
+            Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
+    }
+
+    fun usePixelCopy(surfaceView: SurfaceView, callback: (Bitmap?) -> Unit) {
+        val bitmap: Bitmap = Bitmap.createBitmap(
+            surfaceView.width,
+            surfaceView.height,
+            Bitmap.Config.ARGB_8888
+        );
+        try {
+            // Create a handler thread to offload the processing of the image.
+            val handlerThread = HandlerThread("PixelCopier");
+            handlerThread.start();
+            PixelCopy.request(
+                surfaceView, bitmap,
+                PixelCopy.OnPixelCopyFinishedListener { copyResult ->
+                    if (copyResult == PixelCopy.SUCCESS) {
+                        callback(bitmap)
+                    }
+                    handlerThread.quitSafely();
+                },
+                android.os.Handler(handlerThread.looper)
+            )
+        } catch (e: IllegalArgumentException) {
+            callback(null)
+            // PixelCopy may throw IllegalArgumentException, make sure to handle it
+            e.printStackTrace()
+        }
+
+    }
+}
+
+
 /*
-    convertir displaymetrics(unit) en int y continuar tratando de tomar la foto con ar on
 
-    fun requestpicture() {
-        var displayMetrics: DisplayMetrics = DisplayMetrics()
-        var displayheight: Int = displayMetrics.heightPixels
-        var displayWidth: Int = displayMetrics.widthPixels
-        val ARGB_8888: Bitmap.Config = Bitmap.Config.ARGB_8888
-        createBitmap(width = displayWidth, height = displayheight, Bitmap.Config.ARGB_8888)
-    } */
-    /**
-    fun displayMetricsH(){
+    surfaceView
+
+    convertir displaymetrics(unit) en int y continuar tratando de tomar la foto con ar on */
+
+fun requestpicture() {
     var displayMetrics: DisplayMetrics = DisplayMetrics()
-    var windowManager = getWindowManager().defaultDisplay.getMetrics(displayMetrics)
     var displayheight: Int = displayMetrics.heightPixels
-    }
+    var displayWidth: Int = displayMetrics.widthPixels
+    val ARGB_8888: Bitmap.Config = Bitmap.Config.ARGB_8888
+    createBitmap(width = displayWidth, height = displayheight, Bitmap.Config.ARGB_8888)
+}
+/**
 
-    }
 
-    final CaptureRequest.Builder captureBuilder =
-    mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-    captureBuilder.addTarget(mPreviewReader.getSurface());
-    captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
-    captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(mOrientation));
-    Log.d(TAG, "Capture request created.");
-    mCaptureSession.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler);
-
-     */
+ */
 
